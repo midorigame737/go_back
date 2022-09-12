@@ -12,15 +12,15 @@ func main() {
 	GET,POSTとかのエンドポイントの登録してくれる
 	*/
 	ua := ""
-	engine.Use(func(c *gin.Context) { //Useでミドルウェア登録
+	engine.Use(func(c *gin.Context) { //Useでミドルウェア登録,Useの引数に関数名入れて別個で関数宣言でも行ける
 		ua = c.GetHeader("User-Agent")
 		c.Next() //ここでUseで登録した関数実行
 	})
-	engine.GET("/", func(c *gin.Context) { //多分.com直下にアクセスされたときの処理
+	engine.GET("/", func(c *gin.Context) { //エンドポイント(URI)登録
 		c.JSON(http.StatusOK, gin.H{ //多分第一引数が結果、第２引数がレスポンス内容
 			"message":    "hello world",
 			"User-Agent": ua,
 		})
 	})
-	engine.Run(":3000") //ポート指定
+	engine.Run(":3000") //ポート指定して鯖建てる
 }
