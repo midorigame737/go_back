@@ -1,9 +1,12 @@
 package main
 
 import (
+	"database/sql"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -11,6 +14,12 @@ func main() {
 	/*ginEnginの初期化
 	GET,POSTとかのエンドポイントの登録してくれる
 	*/
+	db, err := sql.Open("mysql", "root:example@tcp(localhost:3306)/TestMirai")
+	if err != nil {
+		log.Fatalf("main sql.Open error err:%v", err)
+	}
+	log.Print("Success Opendb")
+	defer db.Close()
 	ua := ""
 	engine.Use(func(c *gin.Context) { //Useでミドルウェア登録,Useの引数に関数名入れて別個で関数宣言でも行ける
 		ua = c.GetHeader("User-Agent")
