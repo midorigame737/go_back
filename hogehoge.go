@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"gin_test/user"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -14,10 +16,11 @@ func main() {
 	/*ginEnginの初期化
 	GET,POSTとかのエンドポイントの登録してくれる
 	*/
-	db, err := sql.Open("mysql", "root:example@tcp(localhost:3306)/TestMirai")
+	db, err := sql.Open("mysql", "root:example@tcp(localhost:3306)/Test_Mirai")
 	if err != nil {
 		log.Fatalf("main sql.Open error err:%v", err)
 	}
+	user.GetUser()
 	log.Print("Success Opendb")
 	defer db.Close()
 	ua := ""
@@ -31,5 +34,6 @@ func main() {
 			"User-Agent": ua,
 		})
 	})
+
 	engine.Run(":3000") //ポート指定して鯖建てる
 }
