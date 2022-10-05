@@ -12,13 +12,13 @@ type User struct {
 	name string
 }
 
-func GetUser() {
+func  GetUser(int id) {
 	db, err := sql.Open("mysql", "root:example@tcp(localhost:3306)/Test_Mirai")
 	if err != nil {
 		log.Fatalf("getUser sql.Open error err:%v", err)
 	}
 	defer db.Close()
-	rows, err := db.Query("SELECT * FROM user")
+	rows, err := db.Query("SELECT * FROM user WHERE id = ?",id)
 	if err != nil {
 		log.Fatal(err)
 	}
