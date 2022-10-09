@@ -11,6 +11,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+type loginUserData struct {
+	Id   string
+	Pass string
+}
+
 func main() {
 	engine := gin.Default()
 	/*ginEnginの初期化
@@ -20,7 +25,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("main sql.Open error err:%v", err)
 	}
-	user.GetUser()
 	log.Print("Success Opendb")
 	defer db.Close()
 	ua := ""
@@ -32,6 +36,20 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{ //多分第一引数が結果、第２引数がレスポンス内容
 			"message":    "hello world",
 			"User-Agent": ua,
+		})
+	})
+
+	engine.GET("/user", func(c *gin.Context) { //ログイン用のURI
+		var loginData loginUserData //ログイン用のリクエストパラメータ入れる構造体です
+		if c.ShouldBindQuery(&loginData) == nil {
+			log.Println("クエリ読み取ってるはず")
+			log.Println(loginData.Id)
+			log.Println(loginData.Pass)
+		}
+		ReturnUser := user.GetUser(loginData.Id)
+		c.JSON(http.StatusOK, gin.H{ //多分第一引数が結果、第２引数がレスポンス内容
+			"id":   ReturnUser.Id,
+			"name": ReturnUser.Name,
 		})
 	})
 
