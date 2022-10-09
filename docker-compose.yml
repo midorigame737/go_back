@@ -1,5 +1,6 @@
 version: "3"
 services:
+  
   db:
     image: mysql
     restart: always
@@ -7,5 +8,6 @@ services:
       MYSQL_ROOT_PASSWORD: example
     ports:
       - "3306:3306"
+    container_name: 'go_db'
     volumes: 
       - ./initdb:/docker-entrypoint-initdb.d
